@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1075266474620",
+    "project_id": "friendly-fire-app-dev",
+    "storage_bucket": "friendly-fire-app-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075266474620:android:a23357cd2631186d2aeff9",
+        "android_client_info": {
+          "package_name": "com.example.flutterqwe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075266474620-oobfg0652t20r04niq9up25fb5023km4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGQk7ZdBUf-yosKdNlVH-zdNOwx15P2ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075266474620-oobfg0652t20r04niq9up25fb5023km4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1075266474620-3j4r1e3616a310phvl5klfq508upb147.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.friendlyfireesports.com.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075266474620:android:22a1180655a9afcc2aeff9",
+        "android_client_info": {
+          "package_name": "com.friendlyfireesports.app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075266474620-oobfg0652t20r04niq9up25fb5023km4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGQk7ZdBUf-yosKdNlVH-zdNOwx15P2ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075266474620-oobfg0652t20r04niq9up25fb5023km4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1075266474620-3j4r1e3616a310phvl5klfq508upb147.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.friendlyfireesports.com.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+    <?define Manufacturer="Friendly Fire"?>
+    <?define ApplicationName="Friendly Fire Desktop"?>
+
+    <Fragment>
+        <DirectoryRef Id="TARGETDIR">
+            <Directory Id="DesktopFolder" />
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ProductStartMenuFolder" Name="$(var.ApplicationName)" />
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
+            <Component Id="GamebayPathComponent" Guid="2d09da51-43fe-421b-8f6c-20e8d3d14b53" KeyPath="yes">
+                <Environment Id="GamebayPath" Name="GAMEBAY_PATH" Value="[INSTALLDIR_NORMALIZED]" Action="set" />
+            </Component>
+
+            <Component Id="RegistryKeys" Guid="*">
+                <RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="Path" Type="string" Value="[INSTALLDIR_NORMALIZED]" />
+            </Component>
+
+            <Component Id="PSModulePathComponent" Guid="c1c953b9-9042-4bdd-8c3f-a794aa883d79" KeyPath="yes">
+                <Environment Id="PSModulePath" Name="PSModulePath" Value="[INSTALLDIR]powershell\modules" Action="set" Part="last" />
+            </Component>
+
+            <Component Id="ReadmeComponent" Guid="*">
+                <File Id="readme" Name="README.md" KeyPath="yes" Source="README.md" />
+            </Component>
+
+            <!-- <Component Id="BootstrapComponent" Guid="*">
+                <File Id="bootstrap" Name="bootstrap.bat" KeyPath="yes" Source="windows\bootstrap.bat" />
+            </Component> -->
+
+            <ComponentGroupRef Id="DesktopComponents" />
+            <ComponentGroupRef Id="StartMenuComponents" />
+        </ComponentGroup>
+
+        <Property Id="INSTALLDIR_NORMALIZED" Secure="yes" />
+        <CustomAction Id="CA_RemoveTrailingSlash" Script="vbscript">
+            <![CDATA[
+                value = Session.Property("INSTALLDIR")
+                
+                If Right(value, 1) = "\" Then
+                    value = Left(value, Len(value) - 1)
+                End If
+
+                Session.Property("INSTALLDIR_NORMALIZED") = value
+            ]]>
+        </CustomAction>
+
+        <Property Id="WixShellExecTarget" Value="[#bootstrap]" />
+        <CustomAction Id="CA_LaunchProduct" BinaryKey="WixCA" DllEntry="WixShellExec" />
+
+        <InstallExecuteSequence>
+            <Custom Action="CA_RemoveTrailingSlash" After="CostFinalize" />
+            <Custom Action="CA_LaunchProduct" After="InstallFinalize">(NOT INSTALLED) AND (NOT REMOVE)</Custom>
+        </InstallExecuteSequence>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="DesktopComponents" Directory="DesktopFolder">
+            <Component Id="DesktopProductComponent" Guid="*">
+                <Shortcut Id="DesktopProductShortcut" Name="$(var.ApplicationName)" Icon="icon.ico" Target="[INSTALLDIR]bootstrap.bat" />
+                <RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Type="integer" Name="DesktopProductShortcutInstalled" Value="1" />
+                <RemoveFolder Id="RemoveDesktopProductShortcut" On="uninstall" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="StartMenuComponents" Directory="ProductStartMenuFolder">
+            <Component Id="StartMenuProductComponent" Guid="*">
+                <Shortcut Id="StartMenuProductShortcut" Name="$(var.ApplicationName)" Icon="icon.ico" Target="[INSTALLDIR]bootstrap.bat" />
+                <RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="StartMenuProductShortcutInstalled" Type="integer" Value="1" />
+                <RemoveFolder Id="RemoveStartMenuProductShortcut" On="uninstall" />
+            </Component>
+
+            <Component Id="StartMenuUninstallComponent" Guid="*">
+                <Shortcut Id="StartMenuUninstallShortcut" Name="Uninstall" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
+                <RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="StartMenuUninstallShortcutInstalled" Type="integer" Value="1" />
+                <RemoveFolder Id="RemoveStartMenuUninstallShortcut" On="uninstall" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+    <?define Manufacturer="Friendly Fire"?>
+    <?define ApplicationName="Friendly Fire Desktop"?>
+    <?define ProductCode="5fecfa7a-36c3-40f3-84b8-d580a3a2b496"?>
+    <?define UpgradeCode="d13fc761-a8f4-4ca3-9d18-ae8f4f17cb40"?>
+    <?define Version="$(var.BuildVersion)"?>
+
+    <Product
+        Id="*"
+        UpgradeCode="$(var.UpgradeCode)"
+        Manufacturer="$(var.Manufacturer)"
+        Name="$(var.ApplicationName)"
+        Version="$(var.Version)"
+        Language="1033">
+
+        <Package
+            InstallerVersion="200"
+            Manufacturer="$(var.Manufacturer)"
+            Compressed="yes"
+            Comments="Windows Installer Package" />
+
+        <MajorUpgrade AllowDowngrades="no" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
+
+        <Icon Id="icon.ico" SourceFile="windows/runner/resources/app_icon.ico" />
+
+        <!-- https://docs.microsoft.com/en-us/windows/win32/msi/properties -->
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+        <Property Id="ARPHELPLINK" Value="https://friendlyfireesports.com/" />
+        <Property Id="ARPURLINFOABOUT" Value="https://friendlyfireesports.com/" />
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFiles64Folder">
+                <Directory Id="INSTALLDIR" Name="$(var.Manufacturer)">
+                    <Directory Id="RESOURCES_DIR" Name="resources" />
+                    <Directory Id="SHARE_DIR" Name="share" />
+                </Directory>
+            </Directory>
+        </Directory>
+
+        <Feature Id="DefaultFeature" Title="$(var.ApplicationName)" ConfigurableDirectory="INSTALLDIR">
+            <ComponentGroupRef Id="ProductComponents" />
+
+            <ComponentGroupRef Id="AppComponents" />
+            <!-- <ComponentGroupRef Id="ResourcesComponents" /> -->
+        </Feature>
+
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+        <UIRef Id="WixUI_FeatureTree" />
+
+    </Product>
+</Wix>
